@@ -7,9 +7,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/admin/dashboard', function () {
+    return view('admin');
+})->middleware(['auth', 'verified', 'manager:admin'])->name('admin.dashboard');
+
+Route::get('/vendor/dashboard', function () {
+    return view('vendor');
+})->middleware(['auth', 'verified', 'manager:vendor'])->name('vendor.dashboard');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'manager:customer'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -17,4 +27,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
